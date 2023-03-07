@@ -34,8 +34,8 @@ d3.json(url).then(function init(first_sample) {
 
     var layout = {
         title: 'TOP 10 OTUs',
-        height: 600,
-        width: 800,
+        height: 400,
+        width: 600,
         rotation: 'h'
     };
 
@@ -70,6 +70,8 @@ d3.json(url).then(function init(first_sample) {
         + '<p>' + "wfreq: " + first_sample.metadata[0].wfreq + '</p>'];
 
     document.getElementById("sample-metadata").innerHTML = paragraphs;
+
+    gauge(first_sample.metadata[0].wfreq);
 });
 
 // set dropdown box value
@@ -127,8 +129,8 @@ function getData() {
 
         var layout = {
             title: 'TOP 10 OTUs',
-            height: 600,
-            width: 800,
+            height: 400,
+            width: 600,
             rotation: 'h'
         };
 
@@ -181,6 +183,17 @@ function getData() {
 
         document.getElementById("sample-metadata").innerHTML = paragraphs;
     });
-};
 
+    d3.json(url).then(function(gauge_info){
+        console.log(gauge_info.metadata[0]);
+
+        for (let j = 0; j < 153; j++) {
+            if (gauge_info.metadata[j].id == data_id) {
+                index = j;
+                console.log(index)
+            }
+    }
+    gauge(gauge_info.metadata[index].wfreq);
+    });
+}
 
