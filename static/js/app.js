@@ -4,10 +4,6 @@ url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/1
 // Fetch the JSON data and console log it
 d3.json(url).then(function(data){
     console.log(data.samples[0]);
-    let data_sample = data.samples[0];
-    let data_metadata = data.metadata[0]
-    console.log(data_sample);
-    console.log(data_metadata)
 });
 
 // Initialize the default plot with the first data sample
