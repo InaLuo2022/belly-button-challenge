@@ -22,57 +22,56 @@ d3.json(url).then(function init(first_sample) {
 
     console.log(otu_ids);
 
-    let xData = otu_ids;
-    let yData = data_sample.sample_values.slice(0,10);
+    let yData = otu_ids;
+    let xData = data_sample.sample_values.slice(0,10);
+    let otu_labels = data_sample.otu_labels.slice(0,10);
+
+    xData.reverse();
 
     var data = [{
         x: xData,
         y: yData,
         type: 'bar',
+        orientation: 'h',
+        text: otu_labels,
     }];
 
     var layout = {
-        title: 'top 10 OTUs',
-        height: 400,
-        width: 600,
+        title: 'TOP 10 OTUs',
+        height: 600,
+        width: 800,
         rotation: 'h'
     };
 
     Plotly.newPlot("bar", data, layout);
 
-    // bubble chart
-    let bubble_size = []
-        for (let z = 0; z < 80; z++) {
-        bubble_size.push(data_sample.sample_values[z] * 0.8);}
-
+    // Bubble Chart
     var data_bubble = [{
         x: data_sample.otu_ids,
         y: data_sample.sample_values,
         mode: 'markers',
         marker: { 
-            size: bubble_size,
+            size: data_sample.sample_values,
             color: data_sample.otu_ids,
         }
     }];
 
     var layout = {
-        title: 'otu_lable',
+        title: 'OTU ID',
         showlegend: false,
-        height: 400,
-        width: 800,
+        height: 600,
+        width: 1200,
       };
 
     Plotly.newPlot('bubble', data_bubble, layout);
 
     //sample-metadata
-    paragraphs = [];
-
-    paragraphs.push('<p>' + "id: " + first_sample.metadata[0].id + '</p>');
-    paragraphs.push('<p>' + "ethnicity: " + first_sample.metadata[0].ethnicity + '</p>');
-    paragraphs.push('<p>' + "gender: " + first_sample.metadata[0].gender + '</p>');
-    paragraphs.push('<p>' + "location: " + first_sample.metadata[0].location + '</p>');
-    paragraphs.push('<p>' + "bbtype: " + first_sample.metadata[0].bbtype + '</p>');
-    paragraphs.push('<p>' + "wfreq: " + first_sample.metadata[0].wfreq + '</p>')
+    let paragraphs = ['<p>'+"id: "+ first_sample.metadata[0].id+'</p>' 
+        + '<p>' + "ethnicity: " + first_sample.metadata[0].ethnicity + '</p>'
+        + '<p>' + "gender: " + first_sample.metadata[0].gender + '</p>'
+        + '<p>' + "location: " + first_sample.metadata[0].location + '</p>'
+        + '<p>' + "bbtype: " + first_sample.metadata[0].bbtype + '</p>'
+        + '<p>' + "wfreq: " + first_sample.metadata[0].wfreq + '</p>'];
 
     document.getElementById("sample-metadata").innerHTML = paragraphs;
 });
@@ -96,77 +95,95 @@ function getData() {
 
     let index = [];
 
-    index = data_id - 940;
-
     console.log (index);
 
     d3.json(url).then(function(chart_1){
+
+        for (let j = 0; j < 153; j++) {
+            if (chart_1.samples[j].id == data_id) {
+                index = j;
+                console.log(index)
+            }
+        }
+        
         let otu_ids = [];
         let data_sample = chart_1.samples[index]
-    
+
         for (let i = 0; i < 10; i++) {
-        otu_ids.push('OTU' + data_sample.otu_ids[i]);
+            otu_ids.push('OTU' + data_sample.otu_ids[i]);
         }
     
         console.log(otu_ids);
     
-        let xData = otu_ids;
-        let yData = data_sample.sample_values.slice(0,10); 
+        let yData = otu_ids;
+        let xData = data_sample.sample_values.slice(0,10);
+        let otu_labels = data_sample.otu_labels.slice(0,10);
+
+        xData.reverse();
 
         var data = [{
             x: xData,
             y: yData,
+            text: otu_labels,
             type: 'bar',
+            orientation: 'h',
         }];
 
         var layout = {
-            title: 'top 10 OTUs',
-            height: 400,
-            width: 600,
+            title: 'TOP 10 OTUs',
+            height: 600,
+            width: 800,
             rotation: 'h'
         };
 
-        Plotly.newPlot("bar", data, layout);});
+        Plotly.newPlot("bar", data, layout)});
 
     d3.json(url).then(function(chart_2){
 
-        // let otu_lable = 'OTU' + data_sample.otu_lable[index];
-        let bubble_size = []
-        for (let z = 0; z < 153; z++) {
-            bubble_size.push(chart_2.samples[index].sample_values[z] * 0.8);}
+        for (let j = 0; j < 153; j++) {
+            if (chart_2.samples[j].id == data_id) {
+                 index = j;
+                 console.log(index)
+            }
+        }
 
         var data_bubble = [{
             x: chart_2.samples[index].otu_ids,
             y: chart_2.samples[index].sample_values,
+            text: chart_2.samples[index].otu_labels,
             mode: 'markers',
             marker: { 
-                size: bubble_size,
+                size: chart_2.samples[index].sample_values,
                 color: chart_2.samples[index].otu_ids,
             }
         }];
 
         var layout = {
-            title: 'otu_lable',
+            title: 'OTU ID',
             showlegend: false,
-            height: 400,
-            width: 800,
+            height: 600,
+            width: 1200,
           };
 
     Plotly.newPlot('bubble', data_bubble, layout);
     });
 
     d3.json(url).then(function(Demo_info){
-        paragraphs = [];
 
-        paragraphs.push('<p>' + "id: " + Demo_info.metadata[index].id + '</p>');
-        paragraphs.push('<p>' + "ethnicity: " + Demo_info.metadata[index].ethnicity + '</p>');
-        paragraphs.push('<p>' + "gender: " + Demo_info.metadata[index].gender + '</p>');
-        paragraphs.push('<p>' + "location: " + Demo_info.metadata[index].location + '</p>');
-        paragraphs.push('<p>' + "bbtype: " + Demo_info.metadata[index].bbtype + '</p>');
-        paragraphs.push('<p>' + "wfreq: " + Demo_info.metadata[index].wfreq + '</p>')
+        for (let j = 0; j < 153; j++) {
+            if (Demo_info.metadata[j].id == data_id) {
+                 index = j;
+                 console.log(index)
+            }
+        }
+        paragraphs = ['<p>'+"id: "+Demo_info.metadata[index].id+'</p>' 
+           + '<p>' + "ethnicity: " + Demo_info.metadata[index].ethnicity + '</p>'
+           + '<p>' + "gender: " + Demo_info.metadata[index].gender + '</p>'
+           + '<p>' + "location: " + Demo_info.metadata[index].location + '</p>'
+           + '<p>' + "bbtype: " + Demo_info.metadata[index].bbtype + '</p>'
+           + '<p>' + "wfreq: " + Demo_info.metadata[index].wfreq + '</p>'];
 
         document.getElementById("sample-metadata").innerHTML = paragraphs;
-
     });
 };
 
