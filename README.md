@@ -4,7 +4,7 @@
 
 The test subject ID shows on top left corner and once new sample is selected, it will show the followings:
 
-- The horizontal bar chart with a dropdown menu to display the top 10 OTUs found in that individual.
-- The bubble chart that displays each sample.
-- The sample metadata displays on demographic information located in the left hand panel box.
+- The horizontal bar chart with a dropdown menu displayS the top 10 OTUs found in that individual.
+- The bubble chart displays sample values and otu-ids each sample.
+- The sample metadata displays demographic information located in the left hand panel box.
 - The gauge chart desplays the weekly washing frequency of the individual sample.
